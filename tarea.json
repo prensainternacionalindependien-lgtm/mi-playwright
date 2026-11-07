@@ -1,7 +1,7 @@
 {
   "pasos": [
     { "accion": "abrir", "url": "https://example.com" },
-    { "accion": "texto", "selector": "h1" },
+    { "accion": "texto", "selector": "body" },
     { "accion": "captura", "nombre": "pagina" },
     { "accion": "enlaces" }
   ]
