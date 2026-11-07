@@ -1,0 +1,12 @@
+{
+  "name": "mi-playwright",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tareas de navegador y pruebas con Playwright en GitHub Actions",
+  "scripts": {
+    "start": "node ejecutar.js",
+    "test": "node --test test/ejecutar.test.js"
+  },
+  "engines": { "node": ">=24" },
+  "dependencies": { "playwright": "1.65.0" }
+}

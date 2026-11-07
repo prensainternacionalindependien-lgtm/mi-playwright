@@ -1,0 +1,54 @@
+name: Ejecutar Playwright
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'Dirección opcional: sustituye la primera acción abrir'
+        required: false
+        type: string
+  push:
+    branches: [main]
+    paths:
+      - 'tarea.json'
+      - 'ejecutar.js'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'test/**'
+      - '.github/workflows/playwright.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  correr:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Descargar archivos
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Preparar Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Instalar dependencias fijas
+        run: npm ci
+      - name: Instalar Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Comprobar el ejecutor
+        run: npm test
+      - name: Ejecutar tarea
+        env:
+          TARGET_URL: ${{ inputs.url }}
+        run: npm start
+      - name: Guardar texto y capturas
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: resultados-${{ github.run_number }}
+          path: resultados/
+          retention-days: 3
+          if-no-files-found: warn
